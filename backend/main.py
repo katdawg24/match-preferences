@@ -3,7 +3,8 @@
 from db.database import Base, engine, get_db
 from db.models import Group, GroupMember, Task, TaskPreference, Match
 from ManyToOneSetup import solve_assignment_with_ranges, solve_exact_assignment, solve_one_to_one
-
+from pydantic import BaseModel
+from sqlalchemy.orm import joinedload
 
 Base.metadata.create_all(bind=engine)
 
@@ -23,9 +24,9 @@ def generate_matches(group_id: int):
     # Create a dictionary to store task preferences for each group member
     task_preferences = {}
     for member in group_members:
-        member_rankings = db.query(TaskPreference).filter(TaskPreference.group_member_id == member.group_member_id).all()
+        member_rankings = db.query(TaskPreference).options(joinedload(TaskPreference.task)).filter(TaskPreference.group_member_id == member.id).all()
         sorted_rankings = sorted(member_rankings, key=lambda x: x.rank)
-        task_preferences[member.group_member_id] = [task.group_task_id for task in sorted_rankings]
+        task_preferences[member.group_member_id] = [task.task.group_task_id for task in sorted_rankings]
 
     if not direct_matches:
         # Create a dictionary to store the number of task assignments allowed for each task
@@ -50,3 +51,4 @@ def generate_matches(group_id: int):
     else:
         results, maxsum = solve_one_to_one(num_tasks, num_preferences, task_preferences)
 
+generate_matches(1)

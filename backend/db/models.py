@@ -19,7 +19,7 @@ class Group(Base):
 
     # Relationships
     members = relationship("GroupMember", back_populates="group")
-    tasks = relationship("Tasks", back_populates="group")
+    tasks = relationship("Task", back_populates="group")
 
 class GroupMember(Base):
     __tablename__ = "group_members"
@@ -47,13 +47,14 @@ class Task(Base):
 
     group = relationship("Group", back_populates="tasks")
     preferences = relationship("TaskPreference", back_populates="task")
+    matches = relationship("Match", back_populates="task")
 
 class TaskPreference(Base):
     __tablename__ = "task_preferences"
 
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, ForeignKey("tasks.id"))
-    group_member_id = Column(Integer, ForeignKey("group_members.id"))
+    member_id = Column(Integer, ForeignKey("group_members.id"))
     rank = Column(Float)
 
     task = relationship("Task", back_populates="preferences")
