@@ -73,15 +73,15 @@ def find_optimal_assignments(preferences, dummy_nodes):
 
 def find_assignment_counts(num_tasks, group_size, assignment_count_ranges):
     """
-    Find the assignment counts for each task.
-    
+    Find all possible assignment counts for tasks based on the provided ranges.
+
     Parameters:
     - num_tasks: Number of tasks to be assigned.
     - group_size: Number of people.
-    - assignment_count_ranges: Dictionary with person indices as keys and their assignment count ranges as values.
-    
+    - assignment_count_ranges: Dictionary with task indices as keys and their assignment count ranges as values.
+
     Returns:
-    - assignment_counts: Dictionary with possible assignment counts for each task.
+    - valid_counts: List of valid assignment counts that sum to the group size.
     """
 
     ranges = [ list(range(assignment_count_ranges[task][0], assignment_count_ranges[task][1] + 1)) for task in range(num_tasks)]
@@ -103,6 +103,7 @@ def try_assignment_counts(num_tasks, num_preferences, group_size, assignment_cou
     
     Parameters:
     - num_tasks: Number of tasks to be assigned.
+    - num_preferences: Number of preferences for each task.
     - group_size: Number of people.
     - assignment_count: Dictionary with person indices as keys and their assignment counts as values.
     - rankings: Dictionary with person indices as keys and their rankings as values.
@@ -125,15 +126,18 @@ def try_assignment_counts(num_tasks, num_preferences, group_size, assignment_cou
 
 def assignment_ranges_setup(num_tasks, num_preferences, group_size, assignment_count_ranges, rankings):
     """
-    Setup for the assignment ranges.
-    
+    Determines the best assignment counts for tasks based on the provided ranges and rankings.
+
     Parameters:
     - num_tasks: Number of tasks to be assigned.
+    - num_preferences: Number of preferences for each task.
     - group_size: Number of people.
-    - assignment_count_ranges: Dictionary with person indices as keys and their assignment count ranges as values.
-    
+    - assignment_count_ranges: Dictionary with task indices as keys and their assignment count ranges as values.
+    - rankings: Dictionary with person indices as keys and their rankings as values.
+
     Returns:
-    - preferences: Matrix of preferences.
+    - assignment_count_object: Dictionary with task indices as keys and their best assignment counts as values.
+    
     """
 
     valid_assignment_counts = find_assignment_counts(num_tasks, group_size, assignment_count_ranges)

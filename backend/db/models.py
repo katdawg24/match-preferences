@@ -65,7 +65,7 @@ class Match(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, ForeignKey("tasks.id"))
-    group_member_id = Column(Integer, ForeignKey("group_members.id"))
+    member_id = Column(Integer, ForeignKey("group_members.id"))
 
     task = relationship("Task", back_populates="matches")
     group_member = relationship("GroupMember", back_populates="matches")
