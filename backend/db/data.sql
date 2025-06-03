@@ -15,28 +15,54 @@ VALUES
 (2, 'Final Report', 'Prepare and submit the final report', 2, 1, 1),
 (2, 'Team Lead', 'Manage communications & lead team', 3, 1, 1);
 
--- 3. Create 15 members with names
-INSERT INTO group_members (group_id, is_admin, name, group_member_id)
-VALUES 
-(1, FALSE, 'Ava Johnson', 0),
-(1, FALSE, 'Liam Smith', 1),
-(1, FALSE, 'Olivia Chen', 2),
-(1, FALSE, 'Noah Martinez', 3),
-(1, FALSE, 'Emma Patel', 4),
-(1, FALSE, 'James Kim', 5),
-(1, FALSE, 'Sophia Nguyen', 6),
-(1, FALSE, 'Benjamin Lee', 7),
-(1, FALSE, 'Mia Garcia', 8),
-(1, FALSE, 'Lucas Anderson', 9),
-(1, FALSE, 'Isabella Thomas', 10),
-(1, FALSE, 'Henry Davis', 11),
-(1, FALSE, 'Charlotte Wilson', 12),
-(1, FALSE, 'Elijah Moore', 13),
-(1, FALSE, 'Amelia Clark', 14),
-(2, FALSE, 'Sarah Green', 0),
-(2, FALSE, 'Ben Fravel', 1),
-(2, FALSE, 'Owen Lowrey', 2),
-(2, FALSE, 'Nick Swenson', 3);
+INSERT INTO user_accounts (id, email, hashed_password, name, is_admin, is_deleted)
+VALUES
+(1, 'ava.johnson@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Ava Johnson', FALSE, FALSE),
+(2, 'liam.smith@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Liam Smith', FALSE, FALSE),
+(3, 'olivia.chen@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Olivia Chen', FALSE, FALSE),
+(4, 'noah.martinez@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Noah Martinez', FALSE, FALSE),
+(5, 'emma.patel@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Emma Patel', FALSE, FALSE),
+(6, 'james.kim@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'James Kim', FALSE, FALSE),
+(7, 'sophia.nguyen@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Sophia Nguyen', FALSE, FALSE),
+(8, 'benjamin.lee@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Benjamin Lee', FALSE, FALSE),
+(9, 'mia.garcia@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Mia Garcia', FALSE, FALSE),
+(10, 'lucas.anderson@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Lucas Anderson', FALSE, FALSE),
+(11, 'isabella.thomas@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Isabella Thomas', FALSE, FALSE),
+(12, 'henry.davis@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Henry Davis', FALSE, FALSE),
+(13, 'charlotte.wilson@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Charlotte Wilson', FALSE, FALSE),
+(14, 'elijah.moore@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Elijah Moore', FALSE, FALSE),
+(15, 'amelia.clark@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Amelia Clark', FALSE, FALSE),
+(16, 'sarah.green@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Sarah Green', FALSE, FALSE),
+(17, 'ben.fravel@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Ben Fravel', FALSE, FALSE),
+(18, 'owen.lowrey@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Owen Lowrey', FALSE, FALSE),
+(19, 'nick.swenson@example.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Nick Swenson', FALSE, FALSE),
+(20, 'martha.s@email.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Martha Stewart', TRUE),
+(21, 'bhealy@email.com', '$2b$12$7XAU3MgjV/EgdqfuCijg5e3/9CmVepLmRnRZu50axlqfgVrf2KdfG', 'Byron Healy', TRUE);
+
+
+INSERT INTO group_members (group_id, group_member_id, account_id, is_deleted)
+VALUES
+(1, 0, 1, FALSE),
+(1, 1, 2, FALSE),
+(1, 2, 3, FALSE),
+(1, 3, 4, FALSE),
+(1, 4, 5, FALSE),
+(1, 5, 6, FALSE),
+(1, 6, 7, FALSE),
+(1, 7, 8, FALSE),
+(1, 8, 9, FALSE),
+(1, 9, 10, FALSE),
+(1, 10, 11, FALSE),
+(1, 11, 12, FALSE),
+(1, 12, 13, FALSE),
+(1, 13, 14, FALSE),
+(1, 14, 15, FALSE),
+(2, 0, 16, FALSE),
+(2, 1, 17, FALSE),
+(2, 2, 18, FALSE),
+(2, 3, 19, FALSE),
+(1, null, 20, FALSE),
+(2, null, 21, FALSE);
 
 
 -- 4. Insert preferences (member_id 1-15; task_id 1-3)

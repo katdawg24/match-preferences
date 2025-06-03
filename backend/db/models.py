@@ -4,11 +4,24 @@ from .database import Base
 from enum import Enum
 from sqlalchemy import Float
 
+class UserAccount(Base):
+    __tablename__ = "user_accounts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True)
+    hashed_password = Column(String)
+    name = Column(String)
+    is_admin = Column(Boolean, default=False)
+    is_deleted = Column(Boolean, default=False)
+
+    # Relationships
+    group_members = relationship("GroupMember", back_populates="account")
+
 class Group(Base):
     __tablename__ = "groups"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    name = Column(String, unique=True)
     description = Column(String)
     password = Column(String)
     num_preferences = Column(Integer)
@@ -16,6 +29,7 @@ class Group(Base):
     additional_prefs_allowed = Column(Boolean, default=False)
     match_complete = Column(Boolean, default=False)
     match_date = Column(Date)
+    is_deleted = Column(Boolean, default=False)
 
     # Relationships
     members = relationship("GroupMember", back_populates="group")
@@ -26,13 +40,14 @@ class GroupMember(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     group_id = Column(Integer, ForeignKey("groups.id"))
-    group_member_id = Column(Integer)
-    is_admin = Column(Boolean, default=False)
-    name = Column(String)
+    group_member_id = Column(Integer, nullable=True)
+    account_id = Column(Integer, ForeignKey("user_accounts.id"))
+    is_deleted = Column(Boolean, default=False)
 
     group = relationship("Group", back_populates="members")
     preferences = relationship("TaskPreference", back_populates="group_member")
     matches = relationship("Match", back_populates="group_member")
+    account = relationship("UserAccount", back_populates="group_members")
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -66,6 +81,7 @@ class Match(Base):
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, ForeignKey("tasks.id"))
     member_id = Column(Integer, ForeignKey("group_members.id"))
+    match_date = Column(Date)
 
     task = relationship("Task", back_populates="matches")
     group_member = relationship("GroupMember", back_populates="matches")
