@@ -11,7 +11,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from jose import JWTError
 import jwt
 from jwt import InvalidTokenError
-from sqlalchemy import delete, select, text
+from sqlalchemy import delete, null, select, text
 from schemas import GroupMemberToReturn, Token, TokenData, UserToReturn
 from db.database import Base, SessionLocal, engine, get_db
 from db.models import Group, GroupMember, Task, TaskPreference, Match, UserAccount
@@ -45,6 +45,8 @@ async def lifespan(app: FastAPI):
 
     else:
         logging.info("Data already present, skipping canned-data.sql")
+
+        
 
     yield
     # On application shutdown, you can add cleanup tasks if needed.
@@ -195,8 +197,8 @@ def generate_matches(group_id: int):
     direct_matches = group.__getattribute__("direct_matches")
 
     # Fetch group members and tasks
-    group_members = db.query(GroupMember).filter(GroupMember.group_id == group_id).all()
-    tasks = db.query(Task).filter(Task.group_id == group_id).all()
+    group_members = db.query(GroupMember).filter(GroupMember.group_id == group_id, GroupMember.is_deleted == False, GroupMember.group_member_id != null()).all()
+    tasks = db.query(Task).filter(Task.group_id == group_id, Task.is_deleted == False).all()
     num_tasks = len(tasks)
 
     # Create a dictionary to store task preferences for each group member
@@ -245,7 +247,7 @@ def store_matches(group_id: int, results: dict):
     db.commit()
 
     # Get IDs of group members and tasks
-    group_members = db.query(GroupMember).filter(GroupMember.group_id == group_id).all()
+    group_members = db.query(GroupMember).filter(GroupMember.group_id == group_id, GroupMember.is_deleted == False, GroupMember.group_member_id != null()).all()
     member_id_map = {member.group_member_id: member.id for member in group_members}
 
     tasks = db.query(Task).filter(Task.group_id == group_id).all()
@@ -264,3 +266,5 @@ def store_matches(group_id: int, results: dict):
     group.match_date = datetime.now().date()
     db.commit()
 
+generate_matches(1)  # Generate matches for group with ID 1 if it exists
+generate_matches(2)  # Generate matches for group with ID 2 if it exists
