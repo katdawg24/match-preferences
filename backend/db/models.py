@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Date, ForeignKey, Integer, String, Boolean, Enum as SQLAlchemyEnum
+from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, String, Boolean, Enum as SQLAlchemyEnum, func
 from sqlalchemy.orm import relationship
 from .database import Base
 from enum import Enum
 from sqlalchemy import Float
+from sqlalchemy.sql import expression
 
 class UserAccount(Base):
     __tablename__ = "user_accounts"
@@ -11,8 +12,8 @@ class UserAccount(Base):
     email = Column(String, unique=True)
     hashed_password = Column(String)
     name = Column(String)
-    is_admin = Column(Boolean, default=False)
-    is_deleted = Column(Boolean, default=False)
+    is_admin = Column(Boolean, server_default=expression.false())
+    is_deleted = Column(Boolean, server_default=expression.false())
 
     # Relationships
     group_members = relationship("GroupMember", back_populates="account")
@@ -25,11 +26,11 @@ class Group(Base):
     description = Column(String)
     password = Column(String)
     num_preferences = Column(Integer)
-    direct_matches = Column(Boolean, default=False)
-    additional_prefs_allowed = Column(Boolean, default=False)
-    match_complete = Column(Boolean, default=False)
-    match_date = Column(Date)
-    is_deleted = Column(Boolean, default=False)
+    direct_matches = Column(Boolean, server_default=expression.false())
+    additional_prefs_allowed = Column(Boolean, server_default=expression.false())
+    match_complete = Column(Boolean, server_default=expression.false())
+    match_date = Column(DateTime, server_default=func.now())
+    is_deleted = Column(Boolean, server_default=expression.false())
 
     # Relationships
     members = relationship("GroupMember", back_populates="group")
@@ -42,7 +43,7 @@ class GroupMember(Base):
     group_id = Column(Integer, ForeignKey("groups.id"))
     group_member_id = Column(Integer, nullable=True)
     account_id = Column(Integer, ForeignKey("user_accounts.id"))
-    is_deleted = Column(Boolean, default=False)
+    is_deleted = Column(Boolean, server_default=expression.false())
 
     group = relationship("Group", back_populates="members")
     preferences = relationship("TaskPreference", back_populates="group_member")
@@ -59,6 +60,7 @@ class Task(Base):
     group_task_id = Column(Integer)
     min_assignment_count = Column(Integer)
     max_assignment_count = Column(Integer)
+    is_deleted = Column(Boolean, server_default=expression.false())
 
     group = relationship("Group", back_populates="tasks")
     preferences = relationship("TaskPreference", back_populates="task")
@@ -81,7 +83,8 @@ class Match(Base):
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, ForeignKey("tasks.id"))
     member_id = Column(Integer, ForeignKey("group_members.id"))
-    match_date = Column(Date)
+    match_date = Column(DateTime, server_default=func.now())
+    is_deleted = Column(Boolean, server_default=expression.false())
 
     task = relationship("Task", back_populates="matches")
     group_member = relationship("GroupMember", back_populates="matches")
